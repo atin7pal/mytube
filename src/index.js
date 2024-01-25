@@ -4,9 +4,22 @@ import { DB_NAME } from './constants.js';
 import express from 'express';
 import connectDb from './db/index.js';
 
+const app = express()
+
 dotenv.config()
 
-connectDb();
+connectDb()
+.then(() => {
+     app.listen(process.env.PORT || 8000, () => {
+        console.log(`Server successfully running at port ${process.env.PORT}`);
+     })
+     app.on("error", (error) => {
+     console.log("Not able to connect to the database");
+       })
+})
+.catch((error) => {
+    console.log(`Mongo db connection failed ${error}`);
+})
 
 
 
